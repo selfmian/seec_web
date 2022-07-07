@@ -11,6 +11,7 @@ export default {
   created() {
     // /api/aa  ===> 127.0.0.1:2222/aa
     instance.get("/aa").then(res => console.log(res))
+    // instance.post("/ab",{name:"zz"}).then(res => {console.log(res);})
   },
 };
 </script>
