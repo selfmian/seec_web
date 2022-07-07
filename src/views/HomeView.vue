@@ -9,7 +9,8 @@ import instance from "@/api/api"
 export default {
   name: "HomeView",
   created() {
-    instance.get("").then(res => console.log(res))
+    // /api/aa  ===> 127.0.0.1:2222/aa
+    instance.get("/aa").then(res => console.log(res))
   },
 };
 </script>
