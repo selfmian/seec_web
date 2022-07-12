@@ -14,11 +14,11 @@
           auto-complete="off"
           placeholder="账号"
         >
-          <svg-icon
+          <!-- <svg-icon
             slot="prefix"
             icon-class="user"
             class="el-input__icon input-icon"
-          />
+          /> -->
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
@@ -29,11 +29,11 @@
           placeholder="密码"
           @keyup.enter.native="handleLogin"
         >
-          <svg-icon
+          <!-- <svg-icon
             slot="prefix"
             icon-class="password"
             class="el-input__icon input-icon"
-          />
+          /> -->
         </el-input>
       </el-form-item>
 
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import instance from "@/api/api";
+import debounce from "@/plugins/debounce";
 export default {
   name: "Login",
   data() {
@@ -73,8 +75,56 @@ export default {
         password: "",
         rememberMe: false,
       },
-      loginRules: {},
+      loginRules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      },
+      loading: false,
+      register: false,
+      debouncefn: null, // 防抖封装后的新业务函数
     };
+  },
+  created() {
+    // 把请求这个业务函数给防抖封装
+    this.debouncefn = debounce(this.loginfn);
+  },
+  methods: {
+    async loginfn() {
+      // 业务函数
+      let { username, password } = this.loginForm;
+      let { data } = await instance.post("/login", { username, password });
+      console.log(data);
+      let message = data.message;
+      if (message === "success") {
+        // 登录成功
+        let token = data.data.token;
+        localStorage.setItem("token", token);
+        this.$message({
+          message: "登录成功",
+          type: "success",
+          duration: 2000,
+          onClose: () => {
+            this.$router.push("home");
+          },
+        });
+      } else {
+        // 登录不成功
+        this.$message({
+          message: "账户密码不对",
+          type: "error",
+          duration: 2000,
+        });
+      }
+    },
+    handleLogin() {
+      // 用户行为
+      // 把用户名和密码解构出来
+      let { username, password } = this.loginForm;
+      //   console.log(username, password);
+      this.debouncefn();
+    },
   },
 };
 </script>

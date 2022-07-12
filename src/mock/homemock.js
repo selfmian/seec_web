@@ -8,12 +8,12 @@ let arr = ["zhangsan","lisi","wangwu","zhaoliu"]
 // })
 // 正则 /api/aa
 Mock.mock(/\/api\/aa/, "get", (options)=>{
-    console.log(options); // {url:"/api/aa", type:"get",body:null}
+    // console.log(options); // {url:"/api/aa", type:"get",body:null}
     return arr
 })
 // /api/ab
 Mock.mock("/api/ab", "post", (options)=>{
-    console.log('10',options);
+    // console.log('10',options);
     return {
         status:200,
         message:"success",

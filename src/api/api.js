@@ -7,7 +7,7 @@ let instance = axios.create({
 // 请求响应拦截
 instance.interceptors.request.use((config)=>{
     // 请求拦截
-    console.log(config);
+    // console.log(config);
     // config.headers.token = "wwwwwwwwww"
     return config
 })
